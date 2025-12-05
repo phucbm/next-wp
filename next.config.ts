@@ -1,25 +1,20 @@
-import type { NextConfig } from "next";
+// next.config.ts
+import type {NextConfig} from "next";
 
 const nextConfig: NextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: `${process.env.WORDPRESS_HOSTNAME}`,
-        port: "",
-        pathname: "/**",
-      },
-    ],
-  },
-  async redirects() {
-    return [
-      {
-        source: "/admin",
-        destination: `${process.env.WORDPRESS_URL}/wp-admin`,
-        permanent: true,
-      },
-    ];
-  },
+    images: {
+        remotePatterns: [new URL(`${process.env.WORDPRESS_URL}/**`)],
+        // unoptimized: process.env.NODE_ENV === "development",
+    },
+    async redirects() {
+        return [
+            {
+                source: "/manager",
+                destination: `${process.env.WORDPRESS_LOGIN_URL}`,
+                permanent: true,
+            },
+        ];
+    },
 };
 
 export default nextConfig;
